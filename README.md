@@ -6,7 +6,7 @@ golang rabbitmq
 ```
 # 创建rabbitmq连接
 addr := "amqp://admin:admin@127.0.0.1:5672"
-rmq := gormq.New(addr)
+rabbitmq := gormq.New(addr)
 
 # 队列和交换机 创建
 queueExchange := gormq.QueueExchange{
@@ -45,7 +45,7 @@ extras := []gormq.ExtraFunc{
     gormq.SetExchangeAutoDelete(false),
     gormq.SetExchangeExclusive(false),
     gormq.SetExchangeNoWait(true),
-    gormq.SetQueueArgs(map[string]interface{}{
+    gormq.SetExchangeArgs(map[string]interface{}{
         
     }),
 }
@@ -65,6 +65,12 @@ publisher := rabbitmq.NewPublisher(queueExchange, extras...)
 # 发送消息
 err := publisher.Pub([]byte("hhshs"))
 fmt.Println(err)
+
+# 发送原始数据
+publisher.PubRaw(amqp.Publishing{
+    ContentType: "text/plain",
+    Body:        []byte("dhhs"),
+})
 ```
 
 ## todo
