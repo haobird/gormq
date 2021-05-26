@@ -16,12 +16,37 @@ queueExchange := gormq.QueueExchange{
     ExchangeType: "topic",
 }
 
-# 额外的参数 配置
+# 额外参数的默认值为
+var DefaultExtras = Extras{
+	QueueDurable:       true,
+	QueueAutoDelete:    false,
+	QueueExclusive:     false,
+	QueueNoWait:        true,
+	QueueArgs:          nil,
+	ExchangeDurable:    true,
+	ExchangeAutoDelete: false,
+	ExchangeExclusive:  false,
+	ExchangeNoWait:     true,
+	ExchangeArgs:       nil,
+	BindArgs:           nil,
+}
+
+# 设置 额外的参数 配置(每一项都是可选的)
 extras := []gormq.ExtraFunc{
-    gormq.SetQueueDurable(false),
+    gormq.SetQueueDurable(true),
     gormq.SetQueueAutoDelete(false),
+    gormq.SetQueueExclusive(false),
+    gormq.SetQueueNoWait(true),
     gormq.SetQueueArgs(map[string]interface{}{
         "x-message-ttl": 30000,
+    }),
+
+    gormq.SetExchangeDurable(true),
+    gormq.SetExchangeAutoDelete(false),
+    gormq.SetExchangeExclusive(false),
+    gormq.SetExchangeNoWait(true),
+    gormq.SetQueueArgs(map[string]interface{}{
+        
     }),
 }
 
@@ -41,3 +66,7 @@ publisher := rabbitmq.NewPublisher(queueExchange, extras...)
 err := publisher.Pub([]byte("hhshs"))
 fmt.Println(err)
 ```
+
+## todo
+
+- err 返回打印
